@@ -9,40 +9,12 @@ export class App extends Component {
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    positivePercentage: 0,
   };
 
-  handleGoodBtn = () => {
-    this.setState({ good: this.state.good + 1 });
-    this.countTotalFeedback();
-    this.countPositiveFeedbackPercentage();
-  };
-
-  handleNeutralBtn = () => {
-    this.setState({ neutral: this.state.neutral + 1 });
-    this.countTotalFeedback();
-  };
-
-  handleBadBtn = () => {
-    this.setState({ bad: this.state.bad + 1 });
-    this.countTotalFeedback();
-  };
-
-  countTotalFeedback = () => {
-    this.setState(state => {
-      return {
-        total: state.good + state.neutral + state.bad,
-      };
-    });
-    this.countPositiveFeedbackPercentage();
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    this.setState(state => {
-      return {
-        positivePercentage: (100 * state.good) / state.total,
-      };
+  onLeaveFeedback = evt => {
+    const { name } = evt.target;
+    this.setState(pervState => {
+      return { [name]: (pervState[name] += 1) };
     });
   };
 
@@ -50,13 +22,15 @@ export class App extends Component {
     const feedbackShowCondition =
       !this.state.good && !this.state.neutral && !this.state.bad;
 
+    const total = this.state.good + this.state.neutral + this.state.bad;
+    const positivePercentage = (100 * this.state.good) / total;
+
     return (
       <div>
         <Section title="Please leave feedback">
           <FeedbackOptions
-            onGoodClick={this.handleGoodBtn}
-            onNeutralClick={this.handleNeutralBtn}
-            onBadClick={this.handleBadBtn}
+            options={Object.keys(this.state)}
+            onClick={this.onLeaveFeedback}
           />
         </Section>
 
@@ -68,8 +42,8 @@ export class App extends Component {
               good={this.state.good}
               neutral={this.state.neutral}
               bad={this.state.bad}
-              total={this.state.total}
-              positivePercentage={this.state.positivePercentage}
+              total={total}
+              positivePercentage={positivePercentage}
             />
           )}
         </Section>

@@ -3,17 +3,16 @@ import { ConrainerBtn } from './Styles';
 
 export class FeedbackOptions extends Component {
   render() {
+    const { options, onClick } = this.props;
     return (
       <ConrainerBtn>
-        <button type="button" onClick={this.props.onGoodClick}>
-          Good
-        </button>
-        <button type="button" onClick={this.props.onNeutralClick}>
-          Neutral
-        </button>
-        <button type="button" onClick={this.props.onBadClick}>
-          Bad
-        </button>
+        {options.map(option => {
+          return (
+            <button type="button" onClick={onClick} key={option} name={option}>
+              {option}
+            </button>
+          );
+        })}
       </ConrainerBtn>
     );
   }
